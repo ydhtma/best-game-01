@@ -75,5 +75,33 @@ each cleared wave, and slays the Void Maw boss on wave 10 to win.
 - `git -c user.name=<wallet> -c user.email=<wallet> commit` on top of the
   anchor root; history never rewritten.
 
-## Step 7 — Kit gate check
-- (filled after `makefun check` runs against the transcript bundle)
+## Step 7 — Kit gate check (17 Nov 2026, ~00:20 WIB)
+- Determinism: `MAKEFUN_OUTPUT_DIR=/tmp/out1 node main.ts` vs `/tmp/out2`
+  → `diff -r` identical (the grader runs the program twice; both runs must
+  write the same bytes). dossier.json 391,419 B, out/ 716K, 16 files.
+- Gate caps (local): game/ 11 files / 13 entries / 73,225 B (cap 993 /
+  48 MiB); index.html 577 B (cap 1 MiB); 0 symlinks; no network reference
+  in any game/ file (grep `https?://` clean); screenshots 4 × ≤ 67,604 B
+  (cap 256 KiB), 1280x800 (long ≤ 1280, short ≥ 480).
+- `grade-local`: NOT applicable — this kit carries no practice instance
+  (no practice/ dir); RULES.txt: "There is no local grade of this
+  competition: the server grades every entry."
+- `makefun check`: BLOCKED on transcripts — it needs --transcripts, and
+  the bundle below was refused, so no check result exists yet.
+- `makefun bundle` (real run, --no-family, both Muse app session dirs):
+  REFUSED, no file written. Exactly 2 run-record items missing:
+  (1) the prompt — the earliest session opens with no message of the
+  person's in words (the user's verbatim Wave 2 order is not in this
+  session, the parent session, or the top-level session file);
+  (2) --harness-version — no Muse app version is recorded anywhere
+  reachable (no `muse` binary, no version file).
+  Plus a warning, not a refusal: 0 muse-usage rows — subagent rows are
+  written only once the run completes, so the top-level agent must run
+  the SELECT (agent ids 47744917-... and d5a19065-...) after this run
+  ends, then re-run bundle with --muse-usage.
+- To finish (for the top-level agent): supply --prompt-file (user's
+  verbatim words) + --prompt-origin handed-off + --prompt-via, supply
+  --harness-version, attach --muse-usage, re-run bundle, then
+  `makefun check --kit <kit> --repo <repo> --transcripts transcripts.tar.gz`,
+  then submit (NOT in this session: submit is out of scope here).
+
